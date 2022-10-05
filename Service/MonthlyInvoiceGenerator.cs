@@ -11,18 +11,16 @@ namespace ParkingMonitor.Service
     internal class MonthlyInvoiceGenerator
     {
         private readonly IDbContextFactory<Context> _contextFactory;
-        private readonly IInvoiceService _invoiceGenerator;
+        private readonly IInvoiceService _invoiceService;
 
         public MonthlyInvoiceGenerator(IDbContextFactory<Db.Context> contextFactory, IInvoiceService invoiceGenerator)
         {
             _contextFactory = contextFactory;
-            _invoiceGenerator = invoiceGenerator;
+            _invoiceService = invoiceGenerator;
         }
 
         public async Task GenerateInvoices(int year, int month)
         {
-
-
             using var dbContext = _contextFactory.CreateDbContext();
 
             var periodStart = new DateTime(year, month, 1);
@@ -48,13 +46,14 @@ namespace ParkingMonitor.Service
                     var startTransaction = await dbContext.Transactions //Find the latest incoming transaction, as it marks the beginning of the entry.
                         .Where(x => x.Timestamp < endTransaction.Timestamp)
                         .Where(x => x.Direction == Direction.Incoming)
+                        .Where(x => x.RegNr == endTransaction.RegNr)
                         .OrderByDescending(x => x.Timestamp)
                         .FirstAsync();
 
                     periods.Add((startTransaction.Timestamp, endTransaction.Timestamp));
                 }
 
-                await _invoiceGenerator.GenerateInvoice(year, month, vehicleInfo.Key, periods.ToArray());
+                await _invoiceService.GenerateInvoice(year, month, vehicleInfo.Key, periods.ToArray());
             }
 
 

@@ -5,6 +5,11 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkingMonitor", "ParkingMonitor.csproj", "{34A7D786-CF4F-498B-BD4D-53CFF674229E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B0E17091-1AA9-44D8-85B1-C303634BB4B7}"
+	ProjectSection(SolutionItems) = preProject
+		bin\Debug\net6.0\output.json = bin\Debug\net6.0\output.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

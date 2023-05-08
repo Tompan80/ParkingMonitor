@@ -50,7 +50,10 @@ namespace ParkingMonitor.Service
                         .OrderByDescending(x => x.Timestamp)
                         .FirstAsync();
 
-                    periods.Add((startTransaction.Timestamp, endTransaction.Timestamp));
+                    if (!periods.Exists(x => x.Start.Equals(startTransaction.Timestamp)))
+                    {
+                        periods.Add((startTransaction.Timestamp, endTransaction.Timestamp));
+                    }
                 }
 
                 await _invoiceService.GenerateInvoice(year, month, vehicleInfo.Key, periods.ToArray());
